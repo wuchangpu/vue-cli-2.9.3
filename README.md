@@ -23,7 +23,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 # 项目结构
 
 |-- build                            // 项目构建(webpack)相关代码
-|   |-- build.js                     // 生产环境构建代码
+|   |-- build.js                     // 生产环境构建代码(编译入口)
 |   |-- check-version.js             // 检查node、npm等版本
 |   |-- utils.js                     // 构建工具相关
 |   |-- vue-loader.conf.js           // webpack loader配置

@@ -9,10 +9,10 @@ exports.assetsPath = function (_path) {
     ? config.build.assetsSubDirectory
     : config.dev.assetsSubDirectory
 
-  return path.posix.join(assetsSubDirectory, _path)
+  return path.posix.join(assetsSubDirectory, _path) // posix方法修正路径
 }
 
-exports.cssLoaders = function (options) {
+exports.cssLoaders = function (options) { // 示例： ({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   options = options || {}
 
   const cssLoader = {
@@ -30,6 +30,7 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
+  // 生成 loader
   function generateLoaders (loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
@@ -44,10 +45,11 @@ exports.cssLoaders = function (options) {
 
     // Extract CSS when that option is specified
     // (which is the case during production build)
-    if (options.extract) {
+    // 生产模式中提取css
+    if (options.extract) { // 如果 options 中的 extract 为 true 配合生产模式
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader' // 默认使用 vue-style-loader
       })
     } else {
       return ['vue-style-loader'].concat(loaders)
@@ -55,7 +57,7 @@ exports.cssLoaders = function (options) {
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
-  return {
+  return { // 返回各种 loaders 对象
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
@@ -77,16 +79,25 @@ exports.styleLoaders = function (options) {
       test: new RegExp('\\.' + extension + '$'),
       use: loader
     })
+    // 示例：
+    // {
+    //   test: new RegExp(\\.less$),
+    //   use: {
+    //     loader: 'less-loader', options: { sourceMap: true/false }
+    //   }
+    // }
   }
 
   return output
 }
 
-exports.createNotifierCallback = () => {
-  const notifier = require('node-notifier')
+exports.createNotifierCallback = () => { // 配合 friendly-errors-webpack-plugin
+  // 基本用法：notifier.notify('message');
+  const notifier = require('node-notifier') // 发送跨平台通知系统
 
   return (severity, errors) => {
-    if (severity !== 'error') return
+    // 当前设定是只有出现 error 错误时触发 notifier 发送通知
+    if (severity !== 'error') return // 严重程度可以是 'error' 或 'warning'
 
     const error = errors[0]
     const filename = error.file && error.file.split('!').pop()
@@ -95,7 +106,7 @@ exports.createNotifierCallback = () => {
       title: packageConfig.name,
       message: severity + ': ' + error.name,
       subtitle: filename || '',
-      icon: path.join(__dirname, 'logo.png')
+      icon: path.join(__dirname, 'logo.png') // 通知图标
     })
   }
 }
